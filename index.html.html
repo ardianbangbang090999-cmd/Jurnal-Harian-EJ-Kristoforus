@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jurnal Harian Al-Kitab & Renungan</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@600;700&display=swap');
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #F5E6C0;
+      --gold-dark: #8B6914;
+      --cream: #FFF8EE;
+      --sky: #E8F4FD;
+      --blue-deep: #1A4A7C;
+      --blue-mid: #2E6DAD;
+      --green-soft: #D4EDDA;
+      --purple-soft: #E8D5F5;
+      --shadow: rgba(0,0,0,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #E8F4FD 0%, #FFF8EE 40%, #F5E6C0 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* ===== HEADER ===== */
+    .page-header {
+      text-align: center;
+      padding: 30px 20px 20px;
+      margin-bottom: 30px;
+    }
+    .page-header .cross-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    }
+    .page-header h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      color: var(--blue-deep);
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+    .page-header p {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* ===== FORM CARD ===== */
+    .form-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 680px;
+      margin: 0 auto 30px;
+      box-shadow: 0 8px 32px var(--shadow);
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+
+    .form-card h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--blue-deep);
+      font-size: 1.3rem;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--blue-deep);
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+    label span.emoji { margin-right: 5px; }
+
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #D8E8F5;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      color: #333;
+      background: #FAFCFF;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--blue-mid);
+      box-shadow: 0 0 0 3px rgba(46,109,173,0.1);
+      background: white;
+    }
+
+    textarea { resize: vertical; line-height: 1.6; }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
+
+    /* ===== THEME PICKER ===== */
+    .theme-picker {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .theme-btn {
+      padding: 7px 14px;
+      border: 2px solid transparent;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Poppins', sans-serif;
+    }
+    .theme-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px var(--shadow); }
+    .theme-btn.active { border-color: var(--blue-deep) !important; }
+    .theme-btn[data-theme="sunrise"]   { background: linear-gradient(90deg,#FFD98E,#FFA07A); color:#7A3B00; }
+    .theme-btn[data-theme="heavenly"]  { background: linear-gradient(90deg,#B3D9FF,#D8B4FE); color:#2A1A6E; }
+    .theme-btn[data-theme="garden"]    { background: linear-gradient(90deg,#A8D5B5,#C8F7C5); color:#1A4A25; }
+    .theme-btn[data-theme="vintage"]   { background: linear-gradient(90deg,#F5E6C0,#D4A76A); color:#5A3800; }
+    .theme-btn[data-theme="night"]     { background: linear-gradient(90deg,#1A2A4A,#3A4A7A); color:#B8D0FF; }
+
+    /* ===== GENERATE BUTTON ===== */
+    .btn-generate {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: all 0.25s;
+      margin-top: 10px;
+      box-shadow: 0 4px 14px rgba(26,74,124,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-generate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px rgba(26,74,124,0.45);
+    }
+    .btn-generate:active { transform: translateY(0); }
+
+    /* ===== OUTPUT CANVAS AREA ===== */
+    #output-area {
+      max-width: 680px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .output-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      padding: 8px 18px;
+      border: 1.5px solid var(--blue-mid);
+      border-radius: 8px;
+      background: white;
+      color: var(--blue-mid);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn-action:hover { background: var(--blue-mid); color: white; }
+    .btn-action.primary { background: var(--blue-mid); color: white; }
+    .btn-action.primary:hover { background: var(--blue-deep); }
+
+    canvas {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+      display: block;
+    }
+
+    /* ===== LOADING ===== */
+    #loading {
+      text-align: center;
+      padding: 40px;
+      display: none;
+    }
+    .spinner {
+      width: 42px; height: 42px;
+      border: 4px solid #D8E8F5;
+      border-top-color: var(--blue-mid);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <span class="cross-icon">✝️</span>
+    <h1>Jurnal Harian Sabda</h1>
+    <p>Renungan & Doa • Bersama Yesus Setiap Hari</p>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card">
+    <h2>✍️ Isi Jurnalmu Hari Ini</h2>
+
+    <div class="row-2">
+      <div class="form-group">
+        <label><span class="emoji">📖</span>Nama Jurnal</label>
+        <input type="text" id="inp-nama" placeholder="cth: Jurnal Wenny" />
+      </div>
+      <div class="form-group">
+        <label><span class="emoji">📅</span>Tanggal</label>
+        <input type="date" id="inp-tanggal" />
+      </div>
+    </div>
+
+    <div class="row-2">
+      <div class="form-group">
+        <label><span class="emoji">📜</span>Perikop</label>
+        <input type="text" id="inp-perikop" placeholder="cth: Mazmur 34:2-9" />
+      </div>
+      <div class="form-group">
+        <label><span class="emoji">⭐</span>Referensi Ayat Emas</label>
+        <input type="text" id="inp-ayat-ref" placeholder="cth: Mazmur 34:5" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label><span class="emoji">✨</span>Ayat Emas (tulis ayatnya)</label>
+      <textarea id="inp-ayat" rows="3" placeholder="Tuliskan bunyi ayat emasmu di sini..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label><span class="emoji">💭</span>Refleksiku</label>
+      <textarea id="inp-refleksi" rows="5" placeholder="Bagikan refleksimu tentang firman hari ini..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label><span class="emoji">🙏</span>Doaku</label>
+      <textarea id="inp-doa" rows="4" placeholder="Tuliskan doamu kepada Yesus..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label><span class="emoji">🎨</span>Tema Warna</label>
+      <div class="theme-picker">
+        <button class="theme-btn active" data-theme="sunrise">🌅 Sunrise</button>
+        <button class="theme-btn" data-theme="heavenly">☁️ Heavenly</button>
+        <button class="theme-btn" data-theme="garden">🌿 Garden</button>
+        <button class="theme-btn" data-theme="vintage">📜 Vintage</button>
+        <button class="theme-btn" data-theme="night">🌙 Night</button>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateJournal()">
+      ✨ Buat Gambar Jurnalku ✨
+    </button>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <p style="color:#555;font-size:0.9rem;">Membuat jurnalmu yang indah... 🙏</p>
+  </div>
+
+  <!-- OUTPUT -->
+  <div id="output-area">
+    <div class="output-controls">
+      <button class="btn-action primary" onclick="downloadCanvas()">⬇️ Download Gambar</button>
+      <button class="btn-action" onclick="editJournal()">✏️ Edit Jurnal</button>
+    </div>
+    <canvas id="journal-canvas"></canvas>
+  </div>
+
+  <script>
+  // ==================== THEMES ====================
+  const THEMES = {
+    sunrise: {
+      bg1: '#FFF5E6', bg2: '#FFE4CC', bg3: '#FFD4A3',
+      header1: '#FF8C42', header2: '#FF6B35',
+      accent: '#FF8C42', accentLight: '#FFF0E6',
+      text: '#5A2D00', textLight: '#8B4513',
+      gold1: '#FFD700', gold2: '#FFA500',
+      deco: '#FFB347', decorChar: '☀️',
+      cardBg: 'rgba(255,255,255,0.85)',
+      borderColor: '#FFCC88',
+    },
+    heavenly: {
+      bg1: '#EEF5FF', bg2: '#DDE9FF', bg3: '#C8DBFF',
+      header1: '#4A6FA5', header2: '#2E4F8A',
+      accent: '#5B7FC9', accentLight: '#EEF5FF',
+      text: '#1A2A4A', textLight: '#3A5080',
+      gold1: '#87CEEB', gold2: '#4A90D9',
+      deco: '#7EB8E8', decorChar: '☁️',
+      cardBg: 'rgba(255,255,255,0.82)',
+      borderColor: '#A8C8F0',
+    },
+    garden: {
+      bg1: '#F0FAF0', bg2: '#D8F0DC', bg3: '#B8E4C0',
+      header1: '#2E7D32', header2: '#1B5E20',
+      accent: '#388E3C', accentLight: '#E8F5E9',
+      text: '#1B3A1C', textLight: '#33691E',
+      gold1: '#A5D6A7', gold2: '#4CAF50',
+      deco: '#81C784', decorChar: '🌿',
+      cardBg: 'rgba(255,255,255,0.85)',
+      borderColor: '#A5D6A7',
+    },
+    vintage: {
+      bg1: '#FBF0DC', bg2: '#F5E4C0', bg3: '#EDD5A0',
+      header1: '#8B6914', header2: '#6B4F0A',
+      accent: '#A07830', accentLight: '#FBF0DC',
+      text: '#3E2800', textLight: '#7A4F10',
+      gold1: '#D4A76A', gold2: '#A0722A',
+      deco: '#C49A3C', decorChar: '📜',
+      cardBg: 'rgba(255,252,240,0.88)',
+      borderColor: '#C49A6C',
+    },
+    night: {
+      bg1: '#0D1B2A', bg2: '#1A2E45', bg3: '#263550',
+      header1: '#4A7CC7', header2: '#2A5FA5',
+      accent: '#5B8FD9', accentLight: '#1A2E45',
+      text: '#E8F0FF', textLight: '#A0B8D8',
+      gold1: '#FFD700', gold2: '#FFA500',
+      deco: '#6A9FDF', decorChar: '🌙',
+      cardBg: 'rgba(15,30,55,0.88)',
+      borderColor: '#3A5A8A',
+    },
+  };
+
+  let selectedTheme = 'sunrise';
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedTheme = btn.dataset.theme;
+    });
+  });
+
+  // ==================== HELPERS ====================
+  function fmtDate(dateStr) {
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-');
+    const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+    return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+  }
+
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
+    const words = text.split(' ');
+    let line = '';
+    let lineCount = 0;
+    const lines = [];
+    for (let w of words) {
+      const testLine = line + (line ? ' ' : '') + w;
+      if (ctx.measureText(testLine).width > maxWidth && line) {
+        lines.push(line);
+        line = w;
+        lineCount++;
+        if (maxLines && lineCount >= maxLines) { lines[lines.length-1] += '…'; break; }
+      } else { line = testLine; }
+    }
+    if (line && (!maxLines || lineCount < maxLines)) lines.push(line);
+    lines.forEach((l, i) => ctx.fillText(l, x, y + i * lineHeight));
+    return lines.length;
+  }
+
+  function drawRoundedRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  // ==================== CUTE JESUS ILLUSTRATION ====================
+  // A warm, cartoonish illustration: Jesus with arms open, doves, stars
+  function drawCuteIllustration(ctx, cx, cy, size, t) {
+    const s = size;
+
+    // --- Halo ---
+    const haloGrad = ctx.createRadialGradient(cx, cy - s*0.55, s*0.05, cx, cy - s*0.55, s*0.3);
+    haloGrad.addColorStop(0, 'rgba(255,220,50,0.7)');
+    haloGrad.addColorStop(0.6, 'rgba(255,200,0,0.3)');
+    haloGrad.addColorStop(1, 'rgba(255,200,0,0)');
+    ctx.fillStyle = haloGrad;
+    ctx.beginPath();
+    ctx.arc(cx, cy - s*0.55, s*0.28, 0, Math.PI*2);
+    ctx.fill();
+
+    // Halo ring
+    ctx.strokeStyle = '#FFD700';
+    ctx.lineWidth = 2.5;
+    ctx.globalAlpha = 0.85;
+    ctx.beginPath();
+    ctx.arc(cx, cy - s*0.55, s*0.23, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // --- Body / Robe ---
+    const robeGrad = ctx.createLinearGradient(cx - s*0.18, cy - s*0.3, cx + s*0.18, cy + s*0.45);
+    robeGrad.addColorStop(0, '#FFFFFF');
+    robeGrad.addColorStop(0.5, '#F0F4FF');
+    robeGrad.addColorStop(1, '#D8E4FF');
+    ctx.fillStyle = robeGrad;
+    ctx.beginPath();
+    // robe shape: wide trapezoid
+    ctx.moveTo(cx - s*0.04, cy - s*0.26);
+    ctx.bezierCurveTo(cx - s*0.22, cy - s*0.1, cx - s*0.28, cy + s*0.15, cx - s*0.3, cy + s*0.45);
+    ctx.lineTo(cx + s*0.3, cy + s*0.45);
+    ctx.bezierCurveTo(cx + s*0.28, cy + s*0.15, cx + s*0.22, cy - s*0.1, cx + s*0.04, cy - s*0.26);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#B8C8E8';
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    // Sash / belt accent
+    ctx.strokeStyle = t.gold1;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx - s*0.22, cy + s*0.05);
+    ctx.bezierCurveTo(cx - s*0.1, cy + s*0.08, cx + s*0.1, cy + s*0.08, cx + s*0.22, cy + s*0.05);
+    ctx.stroke();
+
+    // --- Arms open wide (cute stubby arms) ---
+    // Left arm
+    ctx.fillStyle = '#FFD4A8';
+    ctx.beginPath();
+    ctx.moveTo(cx - s*0.12, cy - s*0.15);
+    ctx.bezierCurveTo(cx - s*0.35, cy - s*0.08, cx - s*0.48, cy + s*0.02, cx - s*0.5, cy + s*0.08);
+    ctx.bezierCurveTo(cx - s*0.5, cy + s*0.14, cx - s*0.44, cy + s*0.16, cx - s*0.38, cy + s*0.12);
+    ctx.bezierCurveTo(cx - s*0.28, cy + s*0.06, cx - s*0.18, cy - s*0.04, cx - s*0.1, cy - s*0.08);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#F0B882';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Right arm
+    ctx.fillStyle = '#FFD4A8';
+    ctx.beginPath();
+    ctx.moveTo(cx + s*0.12, cy - s*0.15);
+    ctx.bezierCurveTo(cx + s*0.35, cy - s*0.08, cx + s*0.48, cy + s*0.02, cx + s*0.5, cy + s*0.08);
+    ctx.bezierCurveTo(cx + s*0.5, cy + s*0.14, cx + s*0.44, cy + s*0.16, cx + s*0.38, cy + s*0.12);
+    ctx.bezierCurveTo(cx + s*0.28, cy + s*0.06, cx + s*0.18, cy - s*0.04, cx + s*0.1, cy - s*0.08);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#F0B882';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // --- Hands (cute circles) ---
+    [[-0.5, 0.1],[0.5, 0.1]].forEach(([dx, dy]) => {
+      ctx.fillStyle = '#FFD4A8';
+      ctx.beginPath();
+      ctx.arc(cx + dx*s, cy + dy*s, s*0.07, 0, Math.PI*2);
+      ctx.fill();
+      ctx.strokeStyle = '#F0B882';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // --- Face ---
+    // Neck
+    ctx.fillStyle = '#FFD4A8';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy - s*0.27, s*0.06, s*0.07, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // Head
+    const headGrad = ctx.createRadialGradient(cx - s*0.05, cy - s*0.52, s*0.02, cx, cy - s*0.52, s*0.22);
+    headGrad.addColorStop(0, '#FFE8C8');
+    headGrad.addColorStop(1, '#FFD4A8');
+    ctx.fillStyle = headGrad;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy - s*0.52, s*0.17, s*0.2, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = '#F0B882';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Hair (dark brown, flowing)
+    ctx.fillStyle = '#5C3317';
+    ctx.beginPath();
+    // top hair
+    ctx.arc(cx, cy - s*0.52, s*0.17, Math.PI, 0, false);
+    // flowing sides
+    ctx.bezierCurveTo(cx + s*0.17, cy - s*0.4, cx + s*0.2, cy - s*0.3, cx + s*0.15, cy - s*0.2);
+    ctx.lineTo(cx + s*0.1, cy - s*0.2);
+    ctx.lineTo(cx, cy - s*0.5);
+    ctx.lineTo(cx - s*0.1, cy - s*0.2);
+    ctx.lineTo(cx - s*0.15, cy - s*0.2);
+    ctx.bezierCurveTo(cx - s*0.2, cy - s*0.3, cx - s*0.17, cy - s*0.4, cx - s*0.17, cy - s*0.4);
+    ctx.closePath();
+    ctx.fill();
+
+    // Beard
+    ctx.fillStyle = '#6B3E1E';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy - s*0.35, s*0.1, s*0.07, 0, 0, Math.PI);
+    ctx.fill();
+
+    // Eyes (big cute eyes)
+    [-0.07, 0.07].forEach(dx => {
+      // white
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.ellipse(cx + dx*s, cy - s*0.53, s*0.04, s*0.05, 0, 0, Math.PI*2);
+      ctx.fill();
+      // iris
+      ctx.fillStyle = '#3A2000';
+      ctx.beginPath();
+      ctx.ellipse(cx + dx*s, cy - s*0.52, s*0.025, s*0.033, 0, 0, Math.PI*2);
+      ctx.fill();
+      // shine
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(cx + dx*s + s*0.01, cy - s*0.535, s*0.007, 0, Math.PI*2);
+      ctx.fill();
+    });
+
+    // Smile (big cute curve)
+    ctx.strokeStyle = '#7A3B00';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(cx - s*0.065, cy - s*0.425);
+    ctx.quadraticCurveTo(cx, cy - s*0.38, cx + s*0.065, cy - s*0.425);
+    ctx.stroke();
+
+    // Cheek blush
+    [[-0.12, -0.43],[0.12, -0.43]].forEach(([dx,dy]) => {
+      ctx.fillStyle = 'rgba(255,160,130,0.35)';
+      ctx.beginPath();
+      ctx.ellipse(cx + dx*s, cy + dy*s, s*0.05, s*0.025, 0, 0, Math.PI*2);
+      ctx.fill();
+    });
+
+    // --- Cute doves / birds on each side ---
+    drawDove(ctx, cx - s*0.72, cy - s*0.15, s*0.09, true);
+    drawDove(ctx, cx + s*0.72, cy - s*0.15, s*0.09, false);
+
+    // --- Stars / sparkles around ---
+    const sparkles = [
+      [cx - s*0.55, cy - s*0.45], [cx + s*0.55, cy - s*0.45],
+      [cx, cy - s*0.85], [cx - s*0.7, cy - s*0.55], [cx + s*0.7, cy - s*0.55],
+    ];
+    sparkles.forEach(([sx, sy], i) => {
+      drawSparkle(ctx, sx, sy, s * (i===2 ? 0.065 : 0.045), t.gold1);
+    });
+
+    // --- Small cross on chest ---
+    ctx.strokeStyle = t.gold1;
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - s*0.08);
+    ctx.lineTo(cx, cy + s*0.06);
+    ctx.moveTo(cx - s*0.06, cy);
+    ctx.lineTo(cx + s*0.06, cy);
+    ctx.stroke();
+  }
+
+  function drawDove(ctx, cx, cy, s, facingLeft) {
+    ctx.save();
+    if (!facingLeft) ctx.scale(-1,1), cx = -cx;
+    ctx.fillStyle = 'white';
+    // body
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, s, s*0.5, facingLeft ? 0.3 : -0.3, 0, Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = '#DDD';
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+    // wing up
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.beginPath();
+    ctx.moveTo(cx + s*0.1, cy);
+    ctx.bezierCurveTo(cx - s*0.1, cy - s*0.9, cx - s*0.6, cy - s*0.7, cx - s*0.5, cy - s*0.2);
+    ctx.bezierCurveTo(cx - s*0.3, cy + s*0.1, cx + s*0.1, cy + s*0.1, cx + s*0.1, cy);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#CCC';
+    ctx.lineWidth = 0.6;
+    ctx.stroke();
+    // head
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    ctx.arc(cx + s*0.75, cy - s*0.2, s*0.28, 0, Math.PI*2);
+    ctx.fill();
+    // beak
+    ctx.fillStyle = '#FFB347';
+    ctx.beginPath();
+    ctx.moveTo(cx + s*1.02, cy - s*0.18);
+    ctx.lineTo(cx + s*1.18, cy - s*0.13);
+    ctx.lineTo(cx + s*1.02, cy - s*0.08);
+    ctx.closePath();
+    ctx.fill();
+    // eye
+    ctx.fillStyle = '#333';
+    ctx.beginPath();
+    ctx.arc(cx + s*0.82, cy - s*0.26, s*0.07, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    ctx.arc(cx + s*0.85, cy - s*0.28, s*0.025, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawSparkle(ctx, cx, cy, r, color) {
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    for (let i = 0; i < 4; i++) {
+      const angle = i * Math.PI / 2;
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(angle) * r * 0.3, cy + Math.sin(angle) * r * 0.3);
+      ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+      ctx.stroke();
+    }
+    // center dot
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.2, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // ==================== MAIN DRAW ====================
+  function generateJournal() {
+    const nama = document.getElementById('inp-nama').value.trim() || 'Jurnalku';
+    const tgl  = document.getElementById('inp-tanggal').value;
+    const perikop = document.getElementById('inp-perikop').value.trim() || '—';
+    const ayatRef = document.getElementById('inp-ayat-ref').value.trim() || '';
+    const ayat    = document.getElementById('inp-ayat').value.trim() || '';
+    const refleksi = document.getElementById('inp-refleksi').value.trim() || '';
+    const doa     = document.getElementById('inp-doa').value.trim() || '';
+
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('output-area').style.display = 'none';
+
+    setTimeout(() => {
+      drawCanvas({ nama, tgl, perikop, ayatRef, ayat, refleksi, doa });
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('output-area').style.display = 'block';
+      document.getElementById('output-area').scrollIntoView({ behavior:'smooth', block:'start' });
+    }, 400);
+  }
+
+  function drawCanvas(data) {
+    const t = THEMES[selectedTheme];
+    const canvas = document.getElementById('journal-canvas');
+    // 9:16 portrait, good for sharing
+    const W = 900, H = 1600;
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // ── BACKGROUND ──
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0, t.bg1);
+    bgGrad.addColorStop(0.5, t.bg2);
+    bgGrad.addColorStop(1, t.bg3);
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle dot pattern
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    for (let y = 20; y < H; y += 38) {
+      for (let x = 20; x < W; x += 38) {
+        ctx.beginPath();
+        ctx.arc(x, y, 1.5, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // ── OUTER BORDER ──
+    ctx.strokeStyle = t.borderColor;
+    ctx.lineWidth = 3;
+    drawRoundedRect(ctx, 18, 18, W-36, H-36, 22);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 1.2;
+    drawRoundedRect(ctx, 24, 24, W-48, H-48, 18);
+    ctx.stroke();
+
+    let curY = 48;
+
+    // ── HEADER BAND ──
+    const headerH = 160;
+    const headerGrad = ctx.createLinearGradient(0, curY, W, curY+headerH);
+    headerGrad.addColorStop(0, t.header1);
+    headerGrad.addColorStop(1, t.header2);
+    ctx.fillStyle = headerGrad;
+    drawRoundedRect(ctx, 36, curY, W-72, headerH, 16);
+    ctx.fill();
+
+    // crosses deco in header
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    [[120,curY+40],[W-120,curY+40],[W/2-200,curY+100],[W/2+200,curY+100]].forEach(([hx,hy]) => {
+      ctx.font = '32px serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('✝', hx, hy+12);
+    });
+
+    // Title in header
+    ctx.fillStyle = 'white';
+    ctx.font = `bold 52px "Playfair Display", serif`;
+    ctx.textAlign = 'center';
+    ctx.shadowColor = 'rgba(0,0,0,0.25)';
+    ctx.shadowBlur = 6;
+    ctx.fillText(data.nama, W/2, curY + 78);
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = 'rgba(255,255,255,0.88)';
+    ctx.font = `italic 26px "Poppins", sans-serif`;
+    ctx.fillText('📅 ' + (fmtDate(data.tgl) || '—'), W/2, curY + 116);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.font = `22px "Poppins", sans-serif`;
+    ctx.fillText('📖 ' + data.perikop, W/2, curY + 148);
+
+    curY += headerH + 28;
+
+    // ── ILLUSTRATION AREA ──
+    const illusH = 260;
+    ctx.fillStyle = t.cardBg;
+    drawRoundedRect(ctx, 36, curY, W-72, illusH, 14);
+    ctx.fill();
+    ctx.strokeStyle = t.borderColor;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    drawCuteIllustration(ctx, W/2, curY + illusH*0.52, illusH*0.42, t);
+    curY += illusH + 22;
+
+    // ── AYAT EMAS CARD ──
+    const cardPad = 36;
+    function sectionCard(icon, title, accentColor) {
+      ctx.fillStyle = t.cardBg;
+      // will be sized after content; start card
+      return function closeCard(startY, endY, useBorder) {
+        drawRoundedRect(ctx, 36, startY, W-72, endY - startY, 14);
+        ctx.fillStyle = t.cardBg;
+        ctx.fill();
+        if (useBorder) {
+          ctx.strokeStyle = accentColor;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          // Left accent bar
+          ctx.fillStyle = accentColor;
+          drawRoundedRect(ctx, 36, startY, 7, endY-startY, 7);
+          ctx.fill();
+        }
+      };
+    }
+
+    // ── GOLD VERSE ──
+    {
+      const startY = curY;
+      // Gold star bar
+      const starGrad = ctx.createLinearGradient(36, curY, W-36, curY);
+      starGrad.addColorStop(0, t.gold1);
+      starGrad.addColorStop(0.5, t.gold2);
+      starGrad.addColorStop(1, t.gold1);
+      ctx.fillStyle = starGrad;
+      drawRoundedRect(ctx, 36, curY, W-72, 52, 14);
+      ctx.fill();
+
+      ctx.fillStyle = selectedTheme === 'night' ? '#1A2A4A' : 'white';
+      ctx.font = `bold 24px "Poppins", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('⭐  AYAT EMASKU  ⭐', W/2, curY + 33);
+      curY += 52;
+
+      ctx.fillStyle = t.cardBg;
+      drawRoundedRect(ctx, 36, curY, W-72, 20, 0); // connector
+      ctx.fill();
+
+      const verseStartY = curY;
+      ctx.font = `italic bold 21px "Playfair Display", serif`;
+      ctx.fillStyle = t.accent;
+      ctx.textAlign = 'center';
+      ctx.fillText(data.ayatRef || '—', W/2, curY + 36);
+      curY += 52;
+
+      ctx.font = `italic 22px "Playfair Display", serif`;
+      ctx.fillStyle = t.text;
+      ctx.textAlign = 'center';
+      const ayatLines = wrapText(ctx, `"${data.ayat}"` || '""', W/2, curY + 2, W-130, 34);
+      curY += ayatLines * 34 + 28;
+
+      // close verse card
+      ctx.fillStyle = t.cardBg;
+      drawRoundedRect(ctx, 36, verseStartY - 20, W-72, curY - verseStartY + 20, 14);
+      ctx.fill();
+      ctx.strokeStyle = t.gold1;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      // Re-draw verse text ON TOP
+      ctx.font = `italic bold 21px "Playfair Display", serif`;
+      ctx.fillStyle = t.accent;
+      ctx.textAlign = 'center';
+      ctx.fillText(data.ayatRef || '—', W/2, verseStartY + 16);
+      ctx.font = `italic 22px "Playfair Display", serif`;
+      ctx.fillStyle = t.text;
+      wrapText(ctx, `"${data.ayat}"` || '""', W/2, verseStartY + 52, W-130, 34);
+    }
+
+    curY += 22;
+
+    // ── REFLEKSIKU ──
+    {
+      const startY = curY;
+      // section header pill
+      const ph = 42;
+      ctx.fillStyle = t.accent;
+      drawRoundedRect(ctx, 36, curY, W-72, ph, 14);
+      ctx.fill();
+      ctx.fillStyle = 'white';
+      ctx.font = `bold 22px "Poppins", sans-serif`;
+      ctx.textAlign = 'left';
+      ctx.fillText('💭  REFLEKSIKU', 60, curY + 28);
+      curY += ph;
+
+      const textStartY = curY;
+      ctx.fillStyle = t.cardBg;
+      ctx.font = `18px "Poppins", sans-serif`;
+      ctx.fillStyle = t.text;
+      ctx.textAlign = 'left';
+      const rLines = wrapText(ctx, data.refleksi || '—', 60, curY + 28, W - 120, 30, 18);
+      const rH = rLines * 30 + 52;
+      // draw card behind
+      ctx.fillStyle = t.cardBg;
+      drawRoundedRect(ctx, 36, textStartY, W-72, rH, 14);
+      ctx.fill();
+      ctx.strokeStyle = t.accentLight;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      // accent left bar
+      ctx.fillStyle = t.accent + '55';
+      drawRoundedRect(ctx, 36, textStartY, 6, rH, 6);
+      ctx.fill();
+      // re-draw text on top
+      ctx.fillStyle = t.text;
+      ctx.font = `18px "Poppins", sans-serif`;
+      ctx.textAlign = 'left';
+      wrapText(ctx, data.refleksi || '—', 60, textStartY + 28, W - 120, 30, 18);
+      curY = textStartY + rH + 20;
+    }
+
+    // ── DOAKU ──
+    {
+      const ph = 42;
+      ctx.fillStyle = t.deco;
+      drawRoundedRect(ctx, 36, curY, W-72, ph, 14);
+      ctx.fill();
+      ctx.fillStyle = selectedTheme === 'night' ? '#E8F0FF' : 'white';
+      ctx.font = `bold 22px "Poppins", sans-serif`;
+      ctx.textAlign = 'left';
+      ctx.fillText('🙏  DOAKU', 60, curY + 28);
+      curY += ph;
+
+      const textStartY = curY;
+      ctx.font = `18px "Poppins", sans-serif`;
+      ctx.fillStyle = t.textLight;
+      ctx.textAlign = 'left';
+      const dLines = wrapText(ctx, data.doa || '—', 60, curY + 28, W - 120, 30, 16);
+      const dH = dLines * 30 + 52;
+
+      ctx.fillStyle = t.cardBg;
+      drawRoundedRect(ctx, 36, textStartY, W-72, dH, 14);
+      ctx.fill();
+      ctx.strokeStyle = t.borderColor;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = t.deco + '66';
+      drawRoundedRect(ctx, 36, textStartY, 6, dH, 6);
+      ctx.fill();
+
+      ctx.fillStyle = t.textLight;
+      ctx.font = `18px "Poppins", sans-serif`;
+      ctx.textAlign = 'left';
+      wrapText(ctx, data.doa || '—', 60, textStartY + 28, W - 120, 30, 16);
+      curY = textStartY + dH + 22;
+    }
+
+    // ── AMIN FOOTER ──
+    {
+      const footerGrad = ctx.createLinearGradient(36, curY, W-36, curY+60);
+      footerGrad.addColorStop(0, t.header1 + 'CC');
+      footerGrad.addColorStop(1, t.header2 + 'CC');
+      ctx.fillStyle = footerGrad;
+      drawRoundedRect(ctx, 36, curY, W-72, 64, 14);
+      ctx.fill();
+      ctx.fillStyle = 'white';
+      ctx.font = `bold italic 28px "Dancing Script", cursive`;
+      ctx.textAlign = 'center';
+      ctx.fillText('✝  A M I N  ✝', W/2, curY + 40);
+      curY += 64 + 16;
+    }
+
+    // ── BOTTOM WATERMARK ──
+    ctx.fillStyle = t.textLight + '88';
+    ctx.font = `16px "Poppins", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText('✝ Bersama Yesus Setiap Hari ✝', W/2, H - 36);
+  }
+
+  // ==================== ACTIONS ====================
+  function downloadCanvas() {
+    const canvas = document.getElementById('journal-canvas');
+    const nama = document.getElementById('inp-nama').value.trim() || 'Jurnal';
+    const link = document.createElement('a');
+    link.download = `${nama.replace(/\s+/g,'-')}-${document.getElementById('inp-tanggal').value || 'harian'}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  function editJournal() {
+    document.getElementById('output-area').style.display = 'none';
+    document.querySelector('.form-card').scrollIntoView({ behavior:'smooth' });
+  }
+
+  // Set today's date default
+  window.addEventListener('DOMContentLoaded', () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth()+1).padStart(2,'0');
+    const dd = String(today.getDate()).padStart(2,'0');
+    document.getElementById('inp-tanggal').value = `${yyyy}-${mm}-${dd}`;
+  });
+  </script>
+</body>
+</html>
